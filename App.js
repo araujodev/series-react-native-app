@@ -1,21 +1,31 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import LoginPage from './src/pages/LoginPage';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
-  }
-}
+export default createStackNavigator({
+    
+    'Login': {
+        screen: LoginPage,
+        navigationOptions: {
+            title: "Anotherflix"
+        }
+    }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+}, {
+    navigationOptions: {
+        title: "Series",
+        headerStyle: {
+            backgroundColor: '#630503',
+            borderBottomWidth: 1,
+            borderBottomColor: "#23050A",
+        },
+        headerTintColor: "white",
+        headerTitleStyle: {
+            color: "white",
+            fontSize: 25,
+            textShadowColor: "#23050A",
+            textShadowOffset: {width: -1, height: 1},
+            textShadowRadius: 10
+        }
+        
+    }
 });
