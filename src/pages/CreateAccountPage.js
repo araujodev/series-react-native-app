@@ -3,7 +3,7 @@ import {View, Text, Button, TextInput, StyleSheet, ActivityIndicator} from 'reac
 import firebase from 'firebase';
 import FormRow from '../components/FormRow'; 
 
-export default class LoginPage extends React.Component{
+export default class CreateAccountPage extends React.Component{
 
     constructor(props) {
         super(props);
@@ -17,15 +17,7 @@ export default class LoginPage extends React.Component{
     }
 
     componentDidMount() {
-        const config = {
-            apiKey: "AIzaSyBkYcD9-oorn8LTnb5-oSjnLTlJsPiACNU",
-            authDomain: "series-65834.firebaseapp.com",
-            databaseURL: "https://series-65834.firebaseio.com",
-            projectId: "series-65834",
-            storageBucket: "series-65834.appspot.com",
-            messagingSenderId: "259934473599"
-        };
-        firebase.initializeApp(config);
+        firebase.app();
     }
 
 
@@ -35,15 +27,15 @@ export default class LoginPage extends React.Component{
         });
     }
 
-    tryLogin() {
+    createAccount() {
         this.setState({ isLoading: true, message: '' });
         const { email, password } = this.state;
 
         firebase
             .auth()
-            .signInWithEmailAndPassword(email, password)
+            .createUserWithEmailAndPassword(email, password)
             .then( user => {
-                this.setState({ message: "Usuário autenticado com sucesso." }); 
+                this.setState({ message: "Usuário criado com sucesso." }); 
             }) 
             .catch( error => {
                 this.setState({ message: this.getMessageByErrorCode(error.code) });
@@ -51,16 +43,16 @@ export default class LoginPage extends React.Component{
             .then( () => this.setState({ isLoading: false }) );
     }
 
-    createAccount() {
-        this.props.navigation.navigate('CreateAccount');
-    }
-
     getMessageByErrorCode(errorCode) {
         switch (errorCode) {
-            case 'auth/wrong-password':
-                return "Senha Incorreta.";
-            case 'auth/user-not-found':
-                return "Usuário nao encontrado.";
+            case 'auth/email-already-in-use':
+                return "Este email já está sendo usado.";
+            case 'auth/invalid-email':
+                return "Endereço de email inválido.";
+            case 'auth/operation-not-allowed':
+                return "Operaçao nao permitida.";
+            case 'auth/weak-password':
+                return "Senha fraca, tente novamente com outra mais forte.";
             default:
                 return "Erro desconhecido";
         }
@@ -74,8 +66,8 @@ export default class LoginPage extends React.Component{
 
             <Button 
                 color="#C01E00"
-                onPress={ () => this.tryLogin() }
-                title="Acessar Conta" />
+                onPress={ () => this.createAccount() }
+                title="Cadastrar" />
 
         );
     }
@@ -95,7 +87,7 @@ export default class LoginPage extends React.Component{
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.initialText}> Entre com sua conta </Text>
+                <Text style={styles.initialText}> Criar Nova Conta </Text>
                 <FormRow>
                     <TextInput
                         onChangeText={ (value) => this.onChangeHandler('email', value) }
@@ -114,12 +106,6 @@ export default class LoginPage extends React.Component{
                         secureTextEntry />
                 </FormRow>
                 { this.renderButton() }
-                <Text style={styles.orText}> Ou </Text>
-                <Button 
-                    color="#C01E00"
-                    onPress={ () => this.createAccount() }
-                    title="Criar Nova Conta" />
-
                 { this.renderMessage() }
             </View>
         );

@@ -1,5 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 import LoginPage from './src/pages/LoginPage';
+import CreateAccountPage from './src/pages/CreateAccountPage';
 
 export default createStackNavigator({
     
@@ -7,6 +8,12 @@ export default createStackNavigator({
         screen: LoginPage,
         navigationOptions: {
             title: "Anotherflix"
+        }
+    },
+    'CreateAccount': {
+        screen: CreateAccountPage,
+        navigationOptions: {
+            title: "Criar Nova Conta"
         }
     }
 
